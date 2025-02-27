@@ -1,7 +1,7 @@
-'use client'; // Marca o componente como Client Component
+'use client';
 import React from 'react';
 import { useActivities } from '../hooks/useActivities';
-import ActivityList from '../components/ActivityList';
+import Link from 'next/link';
 
 export default function List() {
   const { activityList, deleteActivity } = useActivities();
@@ -14,11 +14,30 @@ export default function List() {
       ) : (
         <div className="flex flex-wrap justify-start gap-6 min-w-[320px]">
           {activityList.map((activity) => (
-            <ActivityList
+            <div
               key={activity.id}
-              activities={[activity]} 
-              onDelete={deleteActivity} 
-            />
+              className="flex flex-col min-w-[300px] w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 bg-white p-4 rounded-lg shadow-lg"
+            >
+              <h2 className="text-xl font-bold text-blue-600">{activity.name}</h2>
+              <p className="text-gray-600"><strong>Responsável:</strong> {activity.responsible}</p>
+              <p className="text-gray-600"><strong>Data:</strong> {activity.date}</p>
+
+              {/* Botão de Excluir */}
+              <button
+                onClick={() => deleteActivity(activity.id)}
+                className="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Excluir
+              </button>
+
+              {/* Botão de Editar abaixo do Excluir */}
+              <Link
+                href={`/activities/${activity.id}`}
+                className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors mt-4 text-center"
+              >
+                Editar
+              </Link>
+            </div>
           ))}
         </div>
       )}

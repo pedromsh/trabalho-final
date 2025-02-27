@@ -18,17 +18,21 @@ export const useActivities = () => {
 
   const addNewActivity = (activity: Activity) => {
     addActivity(activity);
-    setActivityList([...activities]);
+    setActivityList((prevList) => [...prevList, activity]); // Adiciona a nova atividade
   };
 
   const updateExistingActivity = (id: number, updatedActivity: Partial<Activity>) => {
     updateActivity(id, updatedActivity);
-    setActivityList([...activities]);
+    setActivityList((prevList: Activity[]) =>
+      prevList.map((activity) =>
+        activity.id === id ? { ...activity, ...updatedActivity } : activity
+      )
+    ); // Atualiza a atividade no estado local
   };
 
   const deleteExistingActivity = (id: number) => {
     deleteActivity(id);
-    setActivityList([...activities]);
+    setActivityList((prevList: Activity[]) => prevList.filter((activity) => activity.id !== id)); // Remove a atividade
   };
 
   return {
